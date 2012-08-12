@@ -1,0 +1,20 @@
+{
+  "server" : {
+    "host": "127.0.0.1",
+    "port": "8080"
+  },
+  "twitter" : {
+    "consumer" : {
+      "key": "__YOUR_KEY__",
+      "secret": "__YOUR_SECRET__"   
+    },
+    "url" : {
+      "token" : {
+        "request" : "https://api.twitter.com/oauth/request_token",
+        "access" : "https://api.twitter.com/oauth/access_token"      
+      },
+      "authorize": "https://api.twitter.com/oauth/authorize",
+      "callback": "http://__YOUR_URL__"
+    }   
+  } 
+}

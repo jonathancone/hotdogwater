@@ -1,0 +1,24 @@
+
+
+<div class="row">
+
+  <div class="hero-unit span7 offset2">
+  <div><a href="#"><img style="margin-bottom: 50px" src="hdw-logo-very-small.png" /></a></div>
+  <h1>Ketchup with your pals. </h1>        
+  <p/>
+  <p>Welcome to The Hotdog Water Project, type a room name to join and click the button below to get started.</p>
+  <p class="offset1"><input type="text" name="roomname" style="margin:10px" /><a id="login" href="/oauth/twitter"><img src="https://si0.twimg.com/images/dev/buttons/sign-in-with-twitter-l.png"/></a></p>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $('input[name="roomname"]').focus().keypress(function(e){
+        if(e.which == 13) {
+          window.location.href = $('#login').attr('href');
+        }
+      });
+    });
+  </script>
+
+
+</div>
