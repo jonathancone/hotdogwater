@@ -60,6 +60,9 @@
   var username = '<%=req.session.username%>';
 
 
+console.log(roomname);
+console.log(username);
+
   var talk = io.connect('/' + roomname);
   
   talk.on('connection', function(data) {
