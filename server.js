@@ -45,7 +45,7 @@ app.listen(8080);
 
 var socket = io.listen(app);
 var parseCookie = connect.utils.parseCookie;
- var Session = connect.middleware.session.Session;
+var Session = connect.middleware.session.Session;
 
 socket.set('authorization', function (data, accept) {
     if (data.headers.cookie) {
@@ -69,19 +69,28 @@ socket.set('authorization', function (data, accept) {
 socket.sockets.on('connection', function (socket) {
     var hs = socket.handshake;
     console.log('A socket with sessionID ' + hs.sessionID 
-        + ' connected!');
+        + ' connected.');
+
 
     var intervalID = setInterval(function () {
         hs.session.reload( function () { 
             hs.session.touch().save();
         });
     }, 60 * 1000);
+
     socket.on('disconnect', function () {
         console.log('A socket with sessionID ' + hs.sessionID 
             + ' disconnected!');
         clearInterval(intervalID);
     });
- 
+
+    var room = hs.session.roomname;
+
+    socket.on('room', function(room){
+      socket.join(room);
+      socket.emit('message', {msg: 'This is a message'});
+    });
+
 });
 
 app.get('/oauth/callback', function(req, res, next) {
@@ -112,7 +121,6 @@ app.get('/oauth/callback', function(req, res, next) {
 
 app.post('/login', function(req, res) {
 
-  req.session.roomname = req.query.roomname;
 
   oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results) {
  
@@ -120,7 +128,7 @@ app.post('/login', function(req, res) {
       console.log("ERROR OCCURRED: " + error);
     }
     else {
-
+      req.session.roomname = req.param('roomname');
       req.session.oauth = {};
       req.session.oauth.token = oauth_token;
       req.session.oauth.token_secret = oauth_token_secret;
